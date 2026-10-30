@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://thanhcam.com/sitemap.xml
