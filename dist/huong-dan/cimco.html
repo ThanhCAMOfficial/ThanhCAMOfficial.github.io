@@ -21,13 +21,14 @@
   <main class="wrap"><article>
     <h2>Video hướng dẫn</h2>
     <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/GxaQJLL5ur8" title="NX xuất G-code xong tự mở CIMCO" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-    <p>Video làm theo cách sửa trực tiếp file <code>.tcl</code>. Bài dưới đây là cách làm trong giao diện Post Builder, cho kết quả tương tự.</p>
+    <p>Có 2 cách. <b>Cách 1</b> làm trong giao diện Post Builder, 3 dòng code, đường dẫn CIMCO cố định. <b>Cách 2</b> (như trong video) sửa thẳng file <code>.tcl</code>: tự tìm CIMCO ở mọi thư mục cài, không có CIMCO thì mở Notepad++, và không làm NX bị đứng chờ.</p>
 
     <div class="download">
-      <p><b>Tải về:</b> code dán vào Post Builder.</p>
-      <div class="download-links"><a class="btn" href="code/cimco-don-gian.tcl" download>cimco-don-gian.tcl</a></div>
+      <p><b>Tải về:</b> code cách 1 và cách 2.</p>
+      <div class="download-links"><a class="btn" href="code/cimco-don-gian.tcl" download>Cách 1 — cimco-don-gian.tcl</a><a class="btn ghost" href="code/cimco-tcl.tcl" download>Cách 2 — cimco-tcl.tcl</a></div>
     </div>
 
+    <h2>Cách 1 — trong Post Builder</h2>
     <div class="step">
       <div class="step-head"><span class="step-num">01</span><h3>Tạo lệnh <code>CIMCO</code></h3></div>
       <p><b>Program &amp; Tool Path → Custom Command → Create</b>, tên <code>CIMCO</code>, dán code <span class="badge">1</span>. Sửa đường dẫn nếu CIMCO cài ở thư mục khác (giữ hai dấu <code>\\</code>).</p>
@@ -43,6 +44,26 @@ exec "C:\\CIMCO\\CIMCOEdit8\\CIMCOEdit.exe" $mom_output_file_full_name</code></p
     </div>
 
     <div class="note"><b>Đường dẫn CIMCO</b><p>Mở thư mục cài CIMCO, tìm <code>CIMCOEdit.exe</code>, chuột phải → <b>Copy as path</b>. Trong code, mỗi dấu <code>\</code> phải viết thành <code>\\</code>.</p></div>
+
+    <h2>Cách 2 — sửa file .tcl (như video)</h2>
+    <p><b>Sao lưu file <code>.tcl</code> trước.</b> Mở file <code>.tcl</code> của post bằng Notepad++, làm 3 chỗ:</p>
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Gọi lệnh mở file ở cuối chương trình</h3></div>
+      <p>Tìm (<kbd>Ctrl</kbd>+<kbd>F</kbd>) <code>proc MOM_end_of_program</code>. Ngay sau khối <code>PB_CMD_kin_end_of_program</code> và dấu <code>}</code> của nó, thêm dòng:</p>
+      <figure class="code-box"><figcaption>Thêm vào MOM_end_of_program <button class="copy" type="button">Sao chép</button></figcaption><pre><code>   PB_CMD_open_nc_in_cimco</code></pre></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">02</span><h3>Khởi tạo ở đầu chương trình</h3></div>
+      <p>Tìm <code>proc PB_start_of_program</code>. Ngay dưới dòng <code>PB_CMD_fix_RAPID_SET</code>, thêm:</p>
+      <figure class="code-box"><figcaption>Thêm vào PB_start_of_program <button class="copy" type="button">Sao chép</button></figcaption><pre><code>   PB_CMD_Cimco</code></pre></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">03</span><h3>Dán các lệnh tìm CIMCO</h3></div>
+      <p>Tìm <code>proc PB_CMD_FEEDRATE_NUMBER</code>. Dán toàn bộ phần code trong file <b>cimco-tcl.tcl</b> (từ dòng <code>#====</code> đầu tiên) vào <b>ngay phía trên</b> khối đó. Lưu file, xuất thử post.</p>
+      <div class="download-links"><a class="btn ghost" href="code/cimco-tcl.tcl" download>Tải cimco-tcl.tcl</a></div>
+    </div>
+    <div class="note ok"><b>Chọn trình soạn thảo khác</b><p>Tạo file <code>editor_path.txt</code> cạnh file post, mỗi dòng một đường dẫn <code>.exe</code> (dòng bắt đầu bằng <code>#</code> là ghi chú). Post dùng dòng hợp lệ đầu tiên; không có thì tìm CIMCO, rồi Notepad++.</p></div>
+    <div class="note"><b>Lưu ý</b><p>Mỗi lần mở, post ghi thêm một file nhỏ <code>&lt;tên NC&gt;.cimco-launch.diag</code> cạnh file NC (kích thước và mã SHA256 của file NC) để đối chiếu file đã mở. Nếu bạn mở lại post bằng Post Builder rồi Save, Post Builder có thể ghi đè phần đã sửa trong <code>.tcl</code> — làm lại 3 bước trên.</p></div>
 
     <section class="next"><h2>Bài liên quan</h2><ol><li><a href="canh-bao-s0.html">Cảnh báo khi S = 0 hoặc F sai</a></li></ol></section>
   </article></main>

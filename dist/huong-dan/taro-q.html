@@ -34,17 +34,10 @@ G80</code></pre></figure>
 
     <h2>Phần 1 — trong Post Builder</h2>
     <div class="step">
-      <div class="step-head"><span class="step-num">01</span><h3>Mở chu trình Tap, thêm từ Q</h3></div>
-      <p><b>Program &amp; Tool Path → Program → Tool Path → Canned Cycles</b>, bấm vào <b>Tap</b> <span class="badge">1</span>. Ở danh sách từ, chọn <code>cycle_orient (Q - Cycle Orient Value)</code> <span class="badge">2</span>, bấm <b>Add Word</b> rồi kéo vào cuối khối.</p>
-      <figure class="shot"><a href="img/q-1-event-tap.jpg"><img src="img/q-1-event-tap.jpg" width="1400" height="810" loading="lazy" alt="Chu trình Tap trong Canned Cycles và danh sách từ cycle_orient Q"></a><figcaption><span class="badge">1</span> Tap · <span class="badge">2</span> từ <code>cycle_orient (Q)</code>.</figcaption></figure>
-    </div>
-    <div class="step">
-      <div class="step-head"><span class="step-num">02</span><h3>Đổi biểu thức của Q thành <code>$mom_cycle_cam</code></h3></div>
-      <p>Chuột phải vào ô <code>Q</code> vừa thêm <span class="badge">3</span> → <b>Edit</b>. Ở ô <b>Expression</b> <span class="badge">4</span> nhập:</p>
+      <div class="step-head"><span class="step-num">01</span><h3>Thêm từ Q vào chu trình Tap, Expression = <code>$mom_cycle_cam</code></h3></div>
+      <p><b>Canned Cycles → Tap</b>: thêm từ <code>Q</code> vào cuối khối <span class="badge">3</span>, chuột phải → <b>Edit</b>, ô <b>Expression</b> <span class="badge">4</span> nhập:</p>
       <figure class="code-box"><figcaption>Expression <button class="copy" type="button">Sao chép</button></figcaption><pre><code>$mom_cycle_cam</code></pre></figure>
       <figure class="shot"><a href="img/q-2-expression-cam.jpg"><img src="img/q-2-expression-cam.jpg" width="1400" height="731" loading="lazy" alt="Từ Q trong khối G84 và ô Expression mom_cycle_cam"></a><figcaption><span class="badge">3</span> từ Q · <span class="badge">4</span> Expression.</figcaption></figure>
-      <p>Không nhớ tên biến? <b>Utilities → Browse MOM Variables</b>, gõ <code>cam</code> rồi <b>Search</b>, chuột phải vào <code>mom_cycle_cam</code> → <b>Copy</b>.</p>
-      <figure class="shot"><a href="img/q-3-mom-browser.jpg"><img src="img/q-3-mom-browser.jpg" width="1400" height="716" loading="lazy" alt="MOM Variables Browser tìm biến mom_cycle_cam"></a><figcaption>Tìm biến trong MOM Variables Browser.</figcaption></figure>
     </div>
 
     <h2>Phần 2 — trong NX CAM</h2>
@@ -54,7 +47,7 @@ G80</code></pre></figure>
       <figure class="shot narrow"><a href="img/q-4-nx-cam.jpg"><img src="img/q-4-nx-cam.jpg" width="727" height="1022" loading="lazy" alt="Hộp Cycle Parameters trong NX, mục CAM nhập giá trị"></a><figcaption>Giá trị CAM sẽ xuất ra thành Q.</figcaption></figure>
     </div>
 
-    <div class="note"><b>Kiểm tra F khi taro</b><p>Ở chế độ <code>G94</code> (mm/phút), F phải bằng <b>S × bước ren</b>: S100 × 1.25 = <code>F125.</code>. F sai sẽ làm gãy taro. Máy taro cứng (<code>M29</code>, <code>G95</code>) dùng post khác — sẽ có bài riêng.</p></div>
+    <div class="note"><b>Kiểm tra F khi taro</b><p>Ở chế độ <code>G94</code> (mm/phút), F phải bằng <b>S × bước ren</b>: S100 × 1.25 = <code>F125.</code>. F sai sẽ làm gãy taro. Taro cứng (<code>M29</code>, <code>G95</code>) có trong <a href="post-thanhcam.html#taro-cung">post ThanhCAM</a>.</p></div>
     <div class="note"><b>Q trên máy của bạn</b><p>Không phải mọi bộ điều khiển đều hiểu Q trong G84 (Fanuc cần tham số taro bẻ phoi/peck tapping). Thử trên một lỗ trước.</p></div>
 
     <section class="next"><h2>Bài liên quan</h2><ol><li><a href="canh-bao-s0.html">Cảnh báo khi S = 0 hoặc F sai</a></li></ol></section>
