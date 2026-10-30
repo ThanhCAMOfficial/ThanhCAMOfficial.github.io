@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Post NX 12 tự cảnh báo khi quên nhập tốc độ trục chính S = 0 và dừng xuất khi F = 250 (giá trị mặc định). Có code tải về.">
+  <title>Cảnh báo khi S = 0 hoặc F chưa chỉnh — Post NX 12 | ThanhCAM</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><span class="brand-mark">TC</span><span>Thanh<b>CAM</b></span></a><nav class="header-nav"><a href="/">Trang chủ</a><a href="index.html">Hướng dẫn Post NX</a></nav></div></header>
+
+  <section class="hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Hướng dẫn Post NX</a> / Cảnh báo S = 0</div>
+    <h1>Cảnh báo khi S = 0 hoặc F chưa chỉnh</h1>
+    <p class="lead">Quên nhập tốc độ trục chính thì post xuất <code>S0M3</code>: dao chạm phôi khi trục chưa quay. Lệnh này bắt lỗi ngay lúc xuất post: S = 0 thì hiện thông báo và đặt tạm S5000; F = 250 (giá trị hay để quên) thì dừng hẳn và báo tên nguyên công.</p>
+    <ul class="facts"><li>NX 12.0.2 Post Builder</li><li>Phay 3 trục · kiểu Fanuc</li></ul>
+  </div></section>
+
+  <main class="wrap"><article>
+    <div class="download">
+      <p><b>Tải về:</b> code dán vào Post Builder.</p>
+      <div class="download-links"><a class="btn" href="code/canh-bao-s0-f250.tcl" download>canh-bao-s0-f250.tcl</a></div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Tạo lệnh <code>custom_S0F250</code></h3></div>
+      <p><b>Program &amp; Tool Path → Custom Command → Create</b>, tên <code>custom_S0F250</code> <span class="badge">1</span>, dán code:</p>
+      <figure class="code-box"><figcaption>PB_CMD_custom_S0F250 <button class="copy" type="button">Sao chép</button></figcaption>
+<pre><code>global mom_spindle_speed
+global mom_operation_name
+global feed
+
+if { $mom_spindle_speed == 0 } {
+   MOM_display_message "Toc do S = 0 nen da dat S5000. Hay sua S neu khong phu hop." "Canh bao S = 0"
+   set mom_spindle_speed "5000"
+}
+
+if { $feed == 250 } {
+   set errmes "\n\n Nhac nho: operation $mom_operation_name dang de F = 250. Kiem tra lai luong chay dao.\n\n"
+   MOM_abort "$errmes"
+}</code></pre></figure>
+      <figure class="shot"><a href="img/s0-1-custom-command.jpg"><img src="img/s0-1-custom-command.jpg" width="1400" height="889" loading="lazy" alt="Custom Command PB_CMD_custom_S0F250 với code kiểm tra S và F"></a><figcaption><span class="badge">1</span> lệnh <code>PB_CMD_custom_S0F250</code>.</figcaption></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">02</span><h3>Gọi lệnh trong <code>PB_CMD_before_motion</code></h3></div>
+      <p>Chọn <code>PB_CMD_before_motion</code> <span class="badge">2</span> (NX gọi lệnh này trước mọi chuyển động), thêm một dòng <span class="badge">3</span>:</p>
+      <figure class="code-box"><figcaption>Thêm vào PB_CMD_before_motion <button class="copy" type="button">Sao chép</button></figcaption><pre><code>PB_CMD_custom_S0F250</code></pre></figure>
+      <figure class="shot"><a href="img/s0-2-before-motion.jpg"><img src="img/s0-2-before-motion.jpg" width="1400" height="889" loading="lazy" alt="PB_CMD_before_motion chứa dòng PB_CMD_custom_S0F250"></a><figcaption><span class="badge">2</span> before_motion · <span class="badge">3</span> dòng gọi lệnh.</figcaption></figure>
+    </div>
+
+    <div class="note"><b>Đừng dán dòng gọi lệnh vào chính nó</b><p>Dòng <code>PB_CMD_custom_S0F250</code> chỉ đặt trong <code>before_motion</code>. Nếu dán vào bên trong <code>PB_CMD_custom_S0F250</code>, lệnh tự gọi lại chính nó và post bị treo.</p></div>
+
+    <h2>Đổi giá trị</h2>
+    <table>
+      <thead><tr><th>Muốn</th><th>Sửa</th></tr></thead>
+      <tbody>
+        <tr><td>Tốc độ thay thế khác 5000</td><td><code>"5000"</code> ở 2 chỗ</td></tr>
+        <tr><td>Chặn giá trị F khác</td><td><code>250</code> ở dòng <code>if</code></td></tr>
+        <tr><td>Chỉ nhắc, không dừng khi F = 250</td><td><code>MOM_abort</code> → <code>MOM_display_message</code></td></tr>
+      </tbody>
+    </table>
+    <p>Thông báo viết không dấu vì cửa sổ Tcl của NX 12 thường lỗi font tiếng Việt có dấu.</p>
+
+    <section class="next"><h2>Bài liên quan</h2><ol><li><a href="taro-q.html">Thêm Q cho chu trình taro G84</a></li></ol></section>
+  </article></main>
+  <footer><div class="wrap">© 2026 ThanhCAM · Hướng dẫn dựa trên post và máy của tác giả; kiểm tra lại trên máy của bạn trước khi chạy thật. · <a href="/#lien-he">Liên hệ</a></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>

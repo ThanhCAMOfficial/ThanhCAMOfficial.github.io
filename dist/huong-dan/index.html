@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Hướng dẫn chỉnh post NX 12 Post Builder bằng tiếng Việt: từng bước có ảnh, code tải về và file NC mẫu xuất thật.">
+  <title>Hướng dẫn chỉnh Post NX 12 | ThanhCAM</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><span class="brand-mark">TC</span><span>Thanh<b>CAM</b></span></a><nav class="header-nav"><a href="/">Trang chủ</a><a href="index.html">Hướng dẫn Post NX</a></nav></div></header>
+
+  <section class="hero"><div class="wrap">
+    <div class="crumb">ThanhCAM / Hướng dẫn</div>
+    <h1>Hướng dẫn chỉnh Post NX 12</h1>
+    <p class="lead">Mỗi bài giải quyết một việc cụ thể trong Post Builder: ảnh từng bước, code bấm là chép hoặc tải về, và đoạn G-code xuất thật để so sánh. Tất cả làm trên NX 12.0.2, post phay 3 trục kiểu Fanuc.</p>
+    <ul class="facts"><li>Tiếng Việt</li><li>Code tải về miễn phí</li><li>Có video YouTube</li><li>Bài “đã làm · đang viết” sẽ cập nhật dần</li></ul>
+  </div></section>
+
+  <main class="wrap">
+    <h2>Bắt đầu</h2>
+    <div class="cards">
+      <a class="card" href="tao-post-moi.html"><span class="num">MỚI</span><h3>Tạo post phay 3 trục mới bằng Post Builder</h3><p>Cho người mới: tạo post, lưu, các tab hay dùng.</p><span class="tags"><span>Nhập môn</span></span></a>
+    </div>
+
+    <h2>Đầu chương trình và thay dao</h2>
+    <div class="cards">
+      <a class="card" href="g54-x0y0.html"><span class="num">G54…G59</span><h3>Xuất G54…G59 và về X0Y0 đúng gốc phôi</h3><p>Lấy gốc phôi từ Fixture Offset, không cố định G54.</p><span class="tags"><span>Expression</span><span>Custom Command</span></span></a>
+      <a class="card" href="bo-m1-dao-dau.html"><span class="num">M1</span><h3>Bỏ M1 ở lần thay dao đầu tiên</h3><p>Giữ M1 cho các dao sau, bỏ lần dừng vô ích đầu chương trình.</p><span class="tags"><span>Custom Command</span></span></a>
+      <a class="card" href="dao-cho.html"><span class="num">T</span><h3>Thêm dao chờ sau lệnh thay dao</h3><p>In T của dao kế tiếp để ổ dao chuẩn bị sẵn.</p><span class="tags"><span>Block</span><span>Custom Command</span></span></a>
+      <div class="card soon"><span class="num">ĐÃ LÀM · ĐANG VIẾT BÀI</span><h3>Ngày giờ, tên file, thời gian gia công, danh sách dao và Z min</h3><p>Post đã chạy được; tài liệu và ảnh đang cập nhật.</p></div>
+    </div>
+
+    <h2>Định dạng và chuyển động</h2>
+    <div class="cards">
+      <a class="card" href="bo-so-0-thua.html"><span class="num">N M T</span><h3>Bỏ số 0 thừa trước N, M, T và trước dấu chấm</h3><p><code>N0001 T01 M03</code> → <code>N1 T1 M3</code>.</p><span class="tags"><span>Format</span></span></a>
+      <a class="card" href="xoan-oc-g2g3.html"><span class="num">G2 G3</span><h3>Cung tròn G2/G3 và phay xoắn ốc gọn</h3><p>Cung ở G18/G19, xoắn ốc bỏ K và X Y lặp.</p><span class="tags"><span>Circular Move</span><span>init_helix</span></span></a>
+      <a class="card" href="cung-ijk-r.html"><span class="num">R</span><h3>Xuất cung bằng IJK hay R</h3><p>Đổi I J K sang bán kính R, chia cung theo góc phần tư.</p><span class="tags"><span>Circular Move</span></span></a>
+    </div>
+
+    <h2>Chu trình khoan, taro</h2>
+    <div class="cards">
+      <a class="card" href="taro-q.html"><span class="num">G84</span><h3>Thêm Q cho chu trình taro G84</h3><p>Truyền Q qua ô CAM của chu trình.</p><span class="tags"><span>Canned Cycle</span><span>mom_cycle_cam</span></span></a>
+      <a class="card" href="khoan-bo-r.html"><span class="num">G81 G83</span><h3>Chu trình khoan gọn: bỏ R lặp lại</h3><p>R chỉ in một lần mỗi chu trình.</p><span class="tags"><span>.def</span></span></a>
+      <div class="card soon"><span class="num">ĐÃ LÀM · ĐANG VIẾT BÀI</span><h3>Taro cứng M29 / G95</h3><p>Post đã chạy được; nhiều thiết lập, tài liệu và ảnh đang cập nhật.</p></div>
+    </div>
+
+    <h2>An toàn và tiện ích</h2>
+    <div class="cards">
+      <a class="card" href="canh-bao-s0.html"><span class="num">S0</span><h3>Cảnh báo khi S = 0 hoặc F chưa chỉnh</h3><p>Bắt lỗi quên tốc độ ngay lúc xuất post.</p><span class="tags"><span>Custom Command</span></span></a>
+      <a class="card" href="cimco.html"><span class="num">CIMCO</span><h3>NX xuất G-code xong tự mở CIMCO</h3><p>Không phải đi tìm file NC sau mỗi lần xuất.</p><span class="tags"><span>Video</span><span>Custom Command</span></span></a>
+    </div>
+
+    <h2>Video</h2>
+    <p>Các bài có video sẽ nhúng ngay trong bài. Video mới nhất: <a href="https://www.youtube.com/watch?v=GxaQJLL5ur8" rel="noopener">NX xuất G-code xong tự mở CIMCO</a>.</p>
+  </main>
+
+  <footer><div class="wrap">© 2026 ThanhCAM · Hướng dẫn dựa trên post và máy của tác giả; kiểm tra lại trên máy của bạn trước khi chạy thật. · <a href="/#lien-he">Liên hệ</a></div></footer>
+</body>
+</html>

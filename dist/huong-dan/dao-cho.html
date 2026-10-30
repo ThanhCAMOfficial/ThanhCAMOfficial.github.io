@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Thêm dao chờ (gọi trước dao kế tiếp) sau lệnh thay dao trong NX 12 Post Builder, để ổ dao chuẩn bị sẵn. Có code tải về và file NC mẫu.">
+  <title>Thêm dao chờ sau lệnh thay dao — Post NX 12 | ThanhCAM</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><span class="brand-mark">TC</span><span>Thanh<b>CAM</b></span></a><nav class="header-nav"><a href="/">Trang chủ</a><a href="index.html">Hướng dẫn Post NX</a></nav></div></header>
+
+  <section class="hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Hướng dẫn Post NX</a> / Dao chờ</div>
+    <h1>Thêm dao chờ sau lệnh thay dao</h1>
+    <p class="lead">Ngay sau <code>N1T7M6</code>, post in thêm <code>T16</code> (dao của nguyên công kế tiếp). Máy có ổ dao kiểu tay gắp sẽ đưa dao 16 ra sẵn trong lúc dao 7 đang cắt, nên lần thay dao sau nhanh hơn.</p>
+    <ul class="facts"><li>NX 12.0.2 Post Builder</li><li>Phay 3 trục · kiểu Fanuc</li><li>Đã xuất thử trên NX 12</li></ul>
+  </div></section>
+
+  <main class="wrap"><article>
+    <h2>Kết quả</h2>
+    <figure class="code-box after"><figcaption>Trích file NC xuất thật (2 dao)</figcaption>
+<pre><code>N1T7M6
+<mark>T16</mark>
+G0G90G54X0Y0
+...
+N2T16M6
+<mark>T7</mark>
+G0G90G54X0Y0</code></pre></figure>
+    <p>Ở dao cuối, NX trả về số của dao đầu tiên nên post in <code>T7</code>: ổ dao chuẩn bị sẵn dao 1 cho lần chạy chương trình tiếp theo.</p>
+
+    <div class="download">
+      <p><b>Tải về:</b> code dán vào Post Builder và file NC mẫu.</p>
+      <div class="download-links"><a class="btn" href="code/dao-cho.tcl" download>dao-cho.tcl</a><a class="btn ghost" href="code/mau-dao-cho.nc" download>NC mẫu</a></div>
+    </div>
+
+    <h2>Cách 1 — chỉ dùng khối có sẵn (không cần code)</h2>
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Thêm khối <code>T</code> (tool_change_2)</h3></div>
+      <p><b>Program &amp; Tool Path → Program → Operation Start Sequence</b>. Ở danh sách <b>New Block</b>, chọn khối <code>T ---- (tool_change_2)</code> rồi kéo vào <b>Auto Tool Change</b>, đặt cuối cùng (sau <code>MOM_set_seq_off</code>).</p>
+      <figure class="shot"><a href="img/dc-1-chon-block-t.jpg"><img src="img/dc-1-chon-block-t.jpg" width="1400" height="917" loading="lazy" alt="Danh sách New Block, khung đỏ ở dòng T tool_change_2"></a><figcaption>Chọn khối <code>T ---- (tool_change_2)</code>.</figcaption></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">02</span><h3>Kiểm tra từ <code>T</code> là số dao kế tiếp</h3></div>
+      <p>Mở khối vừa thêm <span class="badge">2</span>. Từ <code>T</code> bên trong phải là <b>T - Next Tool Number</b> <span class="badge">3</span>, không phải số dao hiện tại.</p>
+      <figure class="shot"><a href="img/dc-2-block-t.jpg"><img src="img/dc-2-block-t.jpg" width="1400" height="835" loading="lazy" alt="Khối T nằm cuối Auto Tool Change; trong khối, từ T có chú thích T - Next Tool Number"></a><figcaption>Khối <code>T</code> cuối Auto Tool Change, từ T = Next Tool Number.</figcaption></figure>
+      <p>Cách này đơn giản nhưng dao cuối hoặc hai nguyên công cùng dao vẫn có thể in thừa một dòng <code>T</code>. Cần kiểm soát kỹ hơn thì dùng cách 2.</p>
+    </div>
+
+    <h2>Cách 2 — Custom Command (khuyên dùng)</h2>
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Tạo lệnh <code>preselect_next_tool</code></h3></div>
+      <p><b>Custom Command → Create</b>, đặt tên <code>preselect_next_tool</code> <span class="badge">1</span>, dán code dưới đây. Lệnh này không in gì khi nguyên công sau dùng lại đúng dao đang lắp.</p>
+      <figure class="code-box"><figcaption>PB_CMD_preselect_next_tool <button class="copy" type="button">Sao chép</button></figcaption>
+<pre><code>global mom_tool_number mom_next_tool_number
+set enabled 1
+if { !$enabled } { return }
+if { ![info exists mom_next_tool_number] || ![info exists mom_tool_number] } { return }
+if { ![string is integer -strict $mom_next_tool_number] || $mom_next_tool_number &lt;= 0 } { return }
+if { $mom_next_tool_number == $mom_tool_number } { return }
+MOM_output_literal "T$mom_next_tool_number"</code></pre></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">02</span><h3>Đặt lệnh vào Auto Tool Change</h3></div>
+      <p>Kéo <code>PB_CMD_preselect_next_tool</code> vào <b>Auto Tool Change</b>, ngay sau <code>MOM_set_seq_off</code> <span class="badge">2</span>.</p>
+      <figure class="shot"><a href="img/dc-3-custom-command.jpg"><img src="img/dc-3-custom-command.jpg" width="1400" height="851" loading="lazy" alt="Hộp Custom Command preselect_next_tool và khối PB_CMD_preselect nằm sau MOM_set_seq_off"></a><figcaption><span class="badge">1</span> tên lệnh · <span class="badge">2</span> vị trí trong Auto Tool Change.</figcaption></figure>
+    </div>
+
+    <div class="note"><b>Muốn tắt tạm thời</b><p>Đổi <code>set enabled 1</code> thành <code>set enabled 0</code>, không cần xoá lệnh khỏi post.</p></div>
+
+    <h2>Giới hạn</h2>
+    <p>Chỉ dùng cho máy có ổ dao gọi trước được (lệnh <code>T</code> đứng riêng). Máy ổ dao dạng dù (umbrella) thường bỏ qua hoặc báo lỗi, hãy kiểm tra sách hướng dẫn máy.</p>
+
+    <section class="next"><h2>Bài liên quan</h2><ol><li><a href="bo-m1-dao-dau.html">Bỏ M1 ở lần thay dao đầu tiên</a></li><li><a href="g54-x0y0.html">Về X0Y0 theo G54…G59 người dùng chọn</a></li></ol></section>
+  </article></main>
+  <footer><div class="wrap">© 2026 ThanhCAM · Hướng dẫn dựa trên post và máy của tác giả; kiểm tra lại trên máy của bạn trước khi chạy thật. · <a href="/#lien-he">Liên hệ</a></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="NX xuất G-code xong tự mở file NC trong CIMCO Edit. Cách làm bằng Custom Command trong NX 12 Post Builder, có video và code tải về.">
+  <title>NX xuất G-code xong tự mở CIMCO — Post NX 12 | ThanhCAM</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><span class="brand-mark">TC</span><span>Thanh<b>CAM</b></span></a><nav class="header-nav"><a href="/">Trang chủ</a><a href="index.html">Hướng dẫn Post NX</a></nav></div></header>
+
+  <section class="hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Hướng dẫn Post NX</a> / Tự mở CIMCO</div>
+    <h1>NX xuất G-code xong tự mở CIMCO</h1>
+    <p class="lead">Không phải đi tìm file NC sau mỗi lần xuất post: post đóng file rồi mở thẳng trong CIMCO Edit để kiểm tra hoặc truyền xuống máy.</p>
+    <ul class="facts"><li>NX 12.0.2 Post Builder</li><li>CIMCO Edit 8</li><li>Có video</li></ul>
+  </div></section>
+
+  <main class="wrap"><article>
+    <h2>Video hướng dẫn</h2>
+    <div class="video"><iframe src="https://www.youtube-nocookie.com/embed/GxaQJLL5ur8" title="NX xuất G-code xong tự mở CIMCO" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+    <p>Video làm theo cách sửa trực tiếp file <code>.tcl</code>. Bài dưới đây là cách làm trong giao diện Post Builder, cho kết quả tương tự.</p>
+
+    <div class="download">
+      <p><b>Tải về:</b> code dán vào Post Builder.</p>
+      <div class="download-links"><a class="btn" href="code/cimco-don-gian.tcl" download>cimco-don-gian.tcl</a></div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Tạo lệnh <code>CIMCO</code></h3></div>
+      <p><b>Program &amp; Tool Path → Custom Command → Create</b>, tên <code>CIMCO</code>, dán code <span class="badge">1</span>. Sửa đường dẫn nếu CIMCO cài ở thư mục khác (giữ hai dấu <code>\\</code>).</p>
+      <figure class="code-box"><figcaption>PB_CMD_CIMCO <button class="copy" type="button">Sao chép</button></figcaption>
+<pre><code>global mom_output_file_full_name
+MOM_close_output_file $mom_output_file_full_name
+exec "C:\\CIMCO\\CIMCOEdit8\\CIMCOEdit.exe" $mom_output_file_full_name</code></pre></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">02</span><h3>Đặt cuối Program End Sequence</h3></div>
+      <p><b>Program → Program End Sequence → End of Program</b>, kéo <code>PB_CMD_CIMCO</code> xuống <b>cuối cùng</b>, sau dấu <code>%</code> <span class="badge">2</span>. Lệnh phải chạy sau khi mọi dòng NC đã được ghi.</p>
+      <figure class="shot"><a href="img/cimco-1-custom-command.jpg"><img src="img/cimco-1-custom-command.jpg" width="1400" height="787" loading="lazy" alt="Custom Command CIMCO và khối PB_CMD_CIMCO cuối End of Program"></a><figcaption><span class="badge">1</span> code · <span class="badge">2</span> vị trí cuối End of Program.</figcaption></figure>
+    </div>
+
+    <div class="note"><b>Đường dẫn CIMCO</b><p>Mở thư mục cài CIMCO, tìm <code>CIMCOEdit.exe</code>, chuột phải → <b>Copy as path</b>. Trong code, mỗi dấu <code>\</code> phải viết thành <code>\\</code>.</p></div>
+
+    <section class="next"><h2>Bài liên quan</h2><ol><li><a href="canh-bao-s0.html">Cảnh báo khi S = 0 hoặc F sai</a></li></ol></section>
+  </article></main>
+  <footer><div class="wrap">© 2026 ThanhCAM · Hướng dẫn dựa trên post và máy của tác giả; kiểm tra lại trên máy của bạn trước khi chạy thật. · <a href="/#lien-he">Liên hệ</a></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">ThanhCAM</title>
+  <rect width="64" height="64" rx="14" fill="#071917"/>
+  <rect x="4" y="4" width="56" height="56" rx="11" fill="none" stroke="#b8ef63" stroke-width="2"/>
+  <text x="32" y="40" text-anchor="middle" fill="#b8ef63" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="-2">TC</text>
+</svg>

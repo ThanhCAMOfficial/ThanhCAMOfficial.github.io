@@ -1,0 +1,29 @@
+# ThanhCAM — Bo R lap lai o G81/G83/G84
+# Nguon: https://thanhcam.com/huong-dan/  |  NX 12.0.2 Post Builder.
+# Sua file .def cua post (mo bang Notepad++), tim ADDRESS R, thay bang 1 trong 2 cach duoi. Luu, xuat lai post.
+# CANH BAO: ADDRESS R dung chung cho R cua cung tron. Chi dung khi post xuat cung bang I J K.
+
+# ----- Cach 1: R chi in 1 lan dau chu trinh -----
+ ADDRESS R
+  {
+      FORMAT      Coordinate
+      #FORCE       always
+      FORCE once
+      MAX         99999.999 Truncate
+      MIN         -99999.999 Truncate
+      LEADER      "R"
+      ZERO_FORMAT Zero_real
+  }
+
+
+# ----- Cach 2: khong bao gio ep in R -----
+
+ ADDRESS R
+  {
+      FORMAT      Coordinate
+      FORCE       off
+      MAX         99999.999 Truncate
+      MIN         -99999.999 Truncate
+      LEADER      "R"
+      ZERO_FORMAT Zero_real
+  }

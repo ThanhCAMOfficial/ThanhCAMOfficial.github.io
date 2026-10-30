@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Xuất cung tròn G2/G3 bằng bán kính R thay cho I J K trong NX 12 Post Builder, chia cung theo góc phần tư. Có file NC mẫu.">
+  <title>Xuất cung bằng IJK hay R — Post NX 12 | ThanhCAM</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><span class="brand-mark">TC</span><span>Thanh<b>CAM</b></span></a><nav class="header-nav"><a href="/">Trang chủ</a><a href="index.html">Hướng dẫn Post NX</a></nav></div></header>
+
+  <section class="hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Hướng dẫn Post NX</a> / IJK hay R</div>
+    <h1>Xuất cung bằng IJK hay R</h1>
+    <p class="lead">Một số máy cũ hoặc thợ quen đọc <code>G3 X0 Y7. R7.</code> hơn là <code>I-7. J0</code>. Post Builder đổi được, nhưng R không tả được trọn vòng 360°, nên phải chia cung theo góc phần tư (Quadrant).</p>
+    <ul class="facts"><li>NX Post Builder</li><li>Phay 3 trục · kiểu Fanuc</li><li>Đã xuất thử</li></ul>
+  </div></section>
+
+  <main class="wrap"><article>
+    <h2>Kết quả</h2>
+    <div class="compare">
+      <figure class="code-box"><figcaption>IJK, Full Circle — NC xuất thật</figcaption><pre><code>G3Z-1.I-7.J0F2500.
+Z-2.I-7.J0
+Z-3.I-7.J0</code></pre></figure>
+      <figure class="code-box after"><figcaption>R, Quadrant — NC xuất thật</figcaption><pre><code>G03 X0.0 Y7. Z-.5 <mark>R7.</mark> F2500.
+X-7. Y0.0 Z-1. <mark>R7.</mark>
+X0.0 Y-7. Z-1.5 <mark>R7.</mark>
+X7. Y0.0 Z-2. <mark>R7.</mark></code></pre></figure>
+    </div>
+    <p>Cùng một đường xoắn ốc: kiểu R dài gấp 4 lần vì mỗi vòng bị chia thành 4 cung 90°. (File R xuất từ một post khác nên có dấu cách giữa các từ.)</p>
+    <div class="download">
+      <p><b>Tải về:</b> NC mẫu xuất bằng R.</p>
+      <div class="download-links"><a class="btn ghost" href="code/mau-r.nc" download>NC mẫu R</a></div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Circular Move: thay I J K bằng R, chọn Quadrant</h3></div>
+      <p><b>Program &amp; Tool Path → Program → Tool Path → Motion → Circular Move</b>. Xoá các từ <code>I J K</code>, thêm từ <code>R</code> (khung đỏ). Ở <b>Circular Record</b> chọn <b>Quadrant</b> (mũi tên).</p>
+      <figure class="shot"><a href="img/r-1-circular-move.jpg"><img src="img/r-1-circular-move.jpg" width="1400" height="767" loading="lazy" alt="Event Circular Move: khối G17 G2 G90 X Y Z R F S, Circular Record Quadrant"></a><figcaption>Khối cung chỉ còn <code>X Y Z R F</code>, Circular Record = Quadrant.</figcaption></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">02</span><h3>Từ R: Modal = No</h3></div>
+      <p>Mở từ <code>R</code>, chọn <b>Modal = No</b> (khung đỏ) để R in ở <b>mọi</b> dòng cung, kể cả khi bán kính không đổi. Expression giữ <code>$mom_arc_radius</code>.</p>
+      <figure class="shot"><a href="img/r-2-word-r.jpg"><img src="img/r-2-word-r.jpg" width="1400" height="758" loading="lazy" alt="WORD R: Modal No, Expression mom_arc_radius"></a><figcaption>Modal = No: thiếu R ở một dòng cung, máy sẽ hiểu thành đường thẳng hoặc báo lỗi.</figcaption></figure>
+    </div>
+
+    <div class="note"><b>Khi nào nên giữ IJK</b><p>Cung gần 180° tính bằng R dễ sai số; cung trọn vòng không tả được bằng R. Nếu máy đọc được IJK, nên giữ IJK. Ảnh trong bài chụp trên Post Builder bản cũ hơn, các ô cài đặt giống NX 12.</p></div>
+    <div class="note"><b>Đừng sửa ADDRESS R trong .def</b><p>Bài <a href="khoan-bo-r.html">khoan bỏ R</a> đổi <code>FORCE</code> của ADDRESS R. Post xuất cung bằng R thì không áp dụng bài đó.</p></div>
+
+    <section class="next"><h2>Bài liên quan</h2><ol><li><a href="xoan-oc-g2g3.html">Cung tròn G2/G3 và phay xoắn ốc gọn</a></li><li><a href="khoan-bo-r.html">Chu trình khoan gọn: bỏ R lặp lại</a></li></ol></section>
+  </article></main>
+  <footer><div class="wrap">© 2026 ThanhCAM · Hướng dẫn dựa trên post và máy của tác giả; kiểm tra lại trên máy của bạn trước khi chạy thật. · <a href="/#lien-he">Liên hệ</a></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>

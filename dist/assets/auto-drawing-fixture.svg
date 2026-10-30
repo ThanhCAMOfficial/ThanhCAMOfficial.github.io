@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Bản vẽ minh họa đế gá cơ khí</title>
+  <desc id="desc">Bản vẽ kỹ thuật nằm ngang gồm hình chiếu bằng, hình chiếu đứng, hình chiếu cạnh phải và hình chiếu trục đo của cùng một đế gá có hốc và bốn lỗ bắt bulông.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#26342f"/></marker>
+    <style>
+      .sheet{fill:#fbfcfa}.frame{fill:none;stroke:#18241f;stroke-width:3}.thin{fill:none;stroke:#26342f;stroke-width:2}.object{fill:none;stroke:#101915;stroke-width:4;stroke-linejoin:round}.hidden{fill:none;stroke:#596760;stroke-width:2;stroke-dasharray:10 7}.center{fill:none;stroke:#5d7770;stroke-width:1.5;stroke-dasharray:16 5 3 5}.dim{fill:none;stroke:#26342f;stroke-width:1.5;marker-start:url(#arrow);marker-end:url(#arrow)}.ext{fill:none;stroke:#66746d;stroke-width:1.2}.txt{fill:#1b2923;font-family:Arial,"Segoe UI",sans-serif;font-size:22px}.small{fill:#34453e;font-family:Arial,"Segoe UI",sans-serif;font-size:17px}.micro{fill:#46564f;font-family:Arial,"Segoe UI",sans-serif;font-size:14px;letter-spacing:.8px}.label{fill:#1a2822;font-family:Arial,"Segoe UI",sans-serif;font-size:18px;font-weight:700;letter-spacing:1.2px}.title{fill:#101915;font-family:Arial,"Segoe UI",sans-serif;font-size:30px;font-weight:700}.shade{fill:#edf2ee;stroke:#101915;stroke-width:4;stroke-linejoin:round}.side{fill:#dfe8e2;stroke:#101915;stroke-width:4;stroke-linejoin:round}.pocket-floor{fill:#d3ddd6;stroke:#101915;stroke-width:3;stroke-linejoin:round}.pocket-wall{fill:#b8c7be;stroke:#101915;stroke-width:2;stroke-linejoin:round}.hole{fill:#fbfcfa;stroke:#101915;stroke-width:3}.accent{fill:#def2b6;stroke:#36513f;stroke-width:2}.green{fill:#37624e}
+    </style>
+  </defs>
+  <rect class="sheet" width="1600" height="1000"/>
+  <rect class="frame" x="32" y="32" width="1536" height="936"/>
+  <rect class="thin" x="48" y="48" width="1504" height="904"/>
+  <text class="micro" x="72" y="78">THANHCAM · AUTO DRAWING</text>
+  <text class="micro" x="1528" y="78" text-anchor="end">BẢN VẼ MINH HỌA</text>
+
+  <!-- Hình chiếu bằng: đế 220 x 140, hốc 110 x 60, 4 lỗ Ø18 -->
+  <g id="top-view">
+    <text class="label" x="400" y="108" text-anchor="middle">HÌNH CHIẾU BẰNG</text>
+    <rect class="object" x="180" y="175" width="440" height="280" rx="24"/>
+    <rect class="object" x="290" y="255" width="220" height="120" rx="16"/>
+    <circle class="object" cx="230" cy="225" r="18"/><circle class="object" cx="570" cy="225" r="18"/>
+    <circle class="object" cx="230" cy="405" r="18"/><circle class="object" cx="570" cy="405" r="18"/>
+    <path class="center" d="M150 315H650M400 145V485"/>
+    <path class="center" d="M205 225h50M230 200v50M545 225h50M570 200v50M205 405h50M230 380v50M545 405h50M570 380v50"/>
+    <path class="ext" d="M180 164V136M620 164V136"/><path class="dim" d="M186 150H614"/><text class="txt" x="400" y="144" text-anchor="middle">220</text>
+    <path class="ext" d="M165 175H120M165 455H120"/><path class="dim" d="M137 181V449"/><text class="txt" x="128" y="322" text-anchor="middle" transform="rotate(-90 128 322)">140</text>
+    <path class="ext" d="M290 245V220M510 245V220"/><path class="dim" d="M296 230H504"/><text class="small" x="400" y="221" text-anchor="middle">110</text>
+    <path class="ext" d="M520 255H548M520 375H548"/><path class="dim" d="M536 261V369"/><text class="small" x="546" y="320" transform="rotate(-90 546 320)" text-anchor="middle">60</text>
+    <path class="thin" d="M245 213L278 185H345"/><text class="small" x="352" y="190">4× Ø18 THRU</text>
+    <path class="thin" d="M190 187L150 150H92"/><text class="small" x="87" y="145" text-anchor="start">4× R12</text>
+  </g>
+
+  <!-- Hình chiếu đứng, thẳng hàng với hình chiếu bằng -->
+  <g id="front-view">
+    <text class="label" x="400" y="535" text-anchor="middle">HÌNH CHIẾU ĐỨNG</text>
+    <rect class="object" x="180" y="590" width="440" height="48"/>
+    <path class="hidden" d="M290 590V614H510V590M212 590V638M248 590V638M552 590V638M588 590V638"/>
+    <path class="center" d="M400 560V668"/>
+    <path class="ext" d="M165 590H132M165 638H132"/><path class="dim" d="M145 596V632"/><text class="small" x="135" y="618" text-anchor="middle" transform="rotate(-90 135 618)">20</text>
+    <path class="thin" d="M510 614L555 660H640"/><text class="small" x="648" y="666">HỐC SÂU 12</text>
+  </g>
+
+  <!-- Hình chiếu cạnh phải đặt bên phải hình chiếu đứng: phép chiếu góc thứ ba -->
+  <g id="right-view">
+    <text class="label" x="830" y="535" text-anchor="middle">CẠNH PHẢI</text>
+    <rect class="object" x="690" y="590" width="280" height="48"/>
+    <path class="hidden" d="M770 590V614H890V590M722 590V638M758 590V638M902 590V638M938 590V638"/>
+    <path class="center" d="M830 560V668"/>
+    <path class="ext" d="M690 650V685M970 650V685"/><path class="dim" d="M696 674H964"/><text class="small" x="830" y="698" text-anchor="middle">140</text>
+  </g>
+
+  <!-- Hình chiếu trục đo của cùng chi tiết -->
+  <g id="iso-view">
+    <text class="label" x="1120" y="125" text-anchor="middle">HÌNH CHIẾU TRỤC ĐO</text>
+    <polygon class="side" points="875,322 1205,157 1415,262 1415,292 1085,457 875,352"/>
+    <polygon class="shade" points="875,322 1205,157 1415,262 1085,427"/>
+    <polygon class="pocket-wall" points="1018,311 1183,229 1183,244 1018,326"/>
+    <polygon class="pocket-wall" points="1183,229 1273,274 1273,289 1183,244"/>
+    <polygon class="pocket-floor" points="1018,326 1183,244 1273,289 1108,371"/>
+    <path class="object" d="M1018 311L1183 229L1273 274L1108 356Z"/>
+    <ellipse class="hole" cx="960" cy="306" rx="20" ry="11" transform="rotate(27 960 306)"/>
+    <ellipse class="hole" cx="1215" cy="179" rx="20" ry="11" transform="rotate(27 1215 179)"/>
+    <ellipse class="hole" cx="1080" cy="401" rx="20" ry="11" transform="rotate(27 1080 401)"/>
+    <ellipse class="hole" cx="1335" cy="274" rx="20" ry="11" transform="rotate(27 1335 274)"/>
+    <path class="center" d="M930 291l60 30M1185 164l60 30M1050 386l60 30M1305 259l60 30"/>
+    <path class="thin" d="M1360 300L1435 382V420"/><text class="small" x="1490" y="446" text-anchor="end">ĐẾ GÁ 220 × 140 × 20</text>
+  </g>
+
+  <!-- Ghi chú kỹ thuật -->
+  <g id="notes">
+    <text class="label" x="95" y="745">GHI CHÚ</text>
+    <text class="small" x="95" y="780">1. Bo cạnh sắc 0.5 × 45°.</text>
+    <text class="small" x="95" y="810">2. Dung sai chung ISO 2768-m.</text>
+    <text class="small" x="95" y="840">3. Vật liệu minh họa: S50C.</text>
+    <text class="micro" x="95" y="878">Các kích thước và hình học trong tờ này chỉ dùng để minh họa bố cục Auto Drawing.</text>
+  </g>
+
+  <!-- Ký hiệu phép chiếu góc thứ ba -->
+  <g transform="translate(805 765)">
+    <path class="object" d="M0 12L78 0V64L0 52Z"/><ellipse class="object" cx="116" cy="32" rx="28" ry="28"/><ellipse class="thin" cx="116" cy="32" rx="12" ry="28"/>
+    <text class="micro" x="58" y="88" text-anchor="middle">GÓC CHIẾU THỨ BA</text>
+  </g>
+
+  <!-- Khung tên -->
+  <g id="title-block">
+    <rect class="frame" x="1010" y="735" width="542" height="217"/>
+    <path class="thin" d="M1010 790H1552M1010 850H1552M1190 850V910M1375 850V910M1470 850V910M1010 910H1552"/>
+    <rect class="accent" x="1010" y="735" width="542" height="55"/>
+    <text class="title" x="1030" y="772">THANH<tspan class="green">CAM</tspan></text>
+    <text class="micro" x="1530" y="768" text-anchor="end">AUTO DRAWING</text>
+    <text class="label" x="1030" y="826">ĐẾ GÁ CÓ HỐC</text>
+    <text class="micro" x="1025" y="873">VẬT LIỆU</text><text class="small" x="1025" y="898">S50C</text>
+    <text class="micro" x="1205" y="873">TỶ LỆ</text><text class="small" x="1205" y="898">1 : 2</text>
+    <text class="micro" x="1390" y="873">KHỔ GIẤY</text><text class="small" x="1390" y="898">A3</text>
+    <text class="micro" x="1482" y="873">SỐ TỜ</text><text class="small" x="1482" y="898">01 / 01</text>
+    <text class="micro" x="1025" y="932">BẢN VẼ MINH HỌA · KHÔNG PHẢI KẾT QUẢ XUẤT TRỰC TIẾP</text>
+  </g>
+</svg>

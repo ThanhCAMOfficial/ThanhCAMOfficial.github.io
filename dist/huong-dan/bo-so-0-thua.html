@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071917">
+  <!-- NHÁP: nằm ngoài dist, chưa xuất bản. Khi đưa lên: chuyển vào dist/huong-dan/, sửa đường dẫn ảnh và link. -->
+  <meta name="description" content="Hướng dẫn bỏ số 0 thừa trước N, M, T và trước dấu chấm thập phân trong NX 12 Post Builder (Fanuc 3 trục), kèm kết quả G-code thật.">
+  <title>Bỏ số 0 thừa trước N, M, T — Post NX 12 | ThanhCAM</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <style>
+    :root {
+      --ink: #061411; --bg: #071917; --text: #f5f7f2; --muted: #a9bbb2;
+      --line: rgba(227,244,233,.16); --lime: #b8ef63; --cyan: #79c9c1;
+      --body: #10221b; --soft: #5b6d64; --rule: #dbe3de; --amber: #9b651e;
+      --max: 1180px; --read: 760px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f7f9f6; color: var(--body); font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; line-height: 1.7; }
+    a { color: inherit; }
+    img { display: block; max-width: 100%; height: auto; }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
+    .site-header { position: sticky; top: 0; z-index: 10; background: rgba(7,25,23,.95); border-bottom: 1px solid var(--line); color: var(--text); }
+    .header-inner { min-height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 850; font-size: 1.15rem; letter-spacing: -.04em; text-decoration: none; }
+    .brand-mark { display: grid; place-items: center; width: 30px; aspect-ratio: 1; border: 1px solid rgba(184,239,99,.6); color: var(--lime); border-radius: 9px; font: 800 .66rem/1 ui-monospace, monospace; }
+    .brand b { color: var(--lime); font-weight: inherit; }
+    .header-link { color: #d9e3dd; font-size: .9rem; text-decoration: none; padding: 10px 0; }
+    .header-link:hover { color: var(--lime); }
+    .draft-bar { background: #fff4dc; border-bottom: 1px solid #e8cf96; color: #6b4a10; font-size: .85rem; padding: 8px 0; }
+    .hero { background: var(--bg); color: var(--text); padding: 48px 0 40px; }
+    .crumb { color: var(--muted); font: 600 .78rem/1.4 ui-monospace, Consolas, monospace; letter-spacing: .04em; }
+    .crumb a { color: var(--lime); text-decoration: none; }
+    h1 { max-width: var(--read); margin: 14px 0 14px; font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.08; letter-spacing: -.045em; }
+    .lead { max-width: var(--read); color: #c6d4cd; font-size: 1.08rem; margin: 0; }
+    .facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; padding: 0; list-style: none; }
+    .facts li { border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; font: 600 .76rem/1.4 ui-monospace, Consolas, monospace; color: #dbe9df; }
+    main { padding: 40px 0 72px; }
+    article { max-width: var(--read); }
+    h2 { margin: 48px 0 12px; font-size: 1.5rem; letter-spacing: -.03em; line-height: 1.2; }
+    h3 { margin: 28px 0 8px; font-size: 1.1rem; }
+    p, li { color: #26392f; }
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+    .code-box { margin: 0; border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; background: #fff; }
+    .code-box figcaption { padding: 8px 14px; border-bottom: 1px solid var(--rule); background: #f1f5f2; color: var(--soft); font: 600 .76rem/1.4 ui-monospace, Consolas, monospace; }
+    .code-box.after figcaption { background: #eef7df; color: #3f5f12; }
+    pre { margin: 0; padding: 14px 16px; overflow-x: auto; font: .9rem/1.6 ui-monospace, SFMono-Regular, Consolas, monospace; color: #10221b; }
+    code { font-family: ui-monospace, Consolas, monospace; font-size: .92em; background: #eef3ef; padding: 1px 5px; border-radius: 5px; }
+    pre code { background: none; padding: 0; }
+    .hero code { background: rgba(255,255,255,.1); color: var(--lime); }
+    .step { margin: 30px 0; padding-top: 22px; border-top: 1px solid var(--rule); }
+    .step-head { display: flex; align-items: baseline; gap: 12px; }
+    .step-num { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--bg); color: var(--lime); font: 800 .78rem ui-monospace, monospace; }
+    .step h3 { margin: 0; }
+    .shot { margin: 14px 0 0; border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; background: #fff; }
+    .shot img { width: 100%; }
+    .shot figcaption { padding: 9px 14px; border-top: 1px solid var(--rule); color: var(--soft); font-size: .85rem; }
+    .shot.narrow { max-width: 420px; }
+    .note { margin: 22px 0; padding: 14px 16px; border-left: 4px solid var(--amber); background: #fff8ec; border-radius: 0 10px 10px 0; }
+    .note.ok { border-color: #678d1f; background: #f3f9e9; }
+    .note b { display: block; margin-bottom: 4px; }
+    .note p { margin: 0; }
+    table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: .95rem; }
+    th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+    th { color: var(--soft); font-weight: 700; font-size: .85rem; }
+    td code { white-space: nowrap; }
+    .next { margin-top: 56px; padding: 20px; border: 1px solid var(--rule); border-radius: 14px; background: #fff; }
+    .next h2 { margin-top: 0; font-size: 1.15rem; }
+    .next ol { margin: 0; padding-left: 20px; color: var(--soft); }
+    footer { background: var(--bg); color: var(--muted); padding: 28px 0; font-size: .85rem; }
+    :focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; }
+    @media (max-width: 640px) {
+      .wrap { width: calc(100% - 32px); }
+      .compare { grid-template-columns: 1fr; }
+      .hero { padding: 36px 0 30px; }
+      th:nth-child(3), td:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/" aria-label="ThanhCAM — trang chủ"><span class="brand-mark">TC</span><span>Thanh<b>CAM</b></span></a>
+      <a class="header-link" href="index.html">Hướng dẫn Post NX</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="crumb"><a href="index.html">Hướng dẫn Post NX</a> / Bỏ số 0</div>
+      <h1>Bỏ số 0 thừa trước N, M, T và trước dấu chấm</h1>
+      <p class="lead">Post mặc định thường xuất <code>N0001</code>, <code>T01</code>, <code>M03</code>, <code>X0.5</code>. Máy Fanuc đọc được cả hai kiểu, nhưng chương trình gọn hơn thì dễ đọc và dễ dò lỗi hơn. Bài này chỉnh 4 chỗ trong <b>Format</b> của Post Builder.</p>
+      <ul class="facts">
+        <li>NX 12.0.2 Post Builder</li>
+        <li>Phay 3 trục · Generic (kiểu Fanuc)</li>
+        <li>Đã xuất thử trên NX 12</li>
+      </ul>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <article>
+      <h2>Trước và sau</h2>
+      <div class="compare">
+        <figure class="code-box">
+          <figcaption>Trước — theo ô xem trước trong Post Builder</figcaption>
+          <pre><code>N0001
+M01
+T01
+X0.5</code></pre>
+        </figure>
+        <figure class="code-box after">
+          <figcaption>Sau — trích file NC xuất thật</figcaption>
+          <pre><code>N1T7M6
+G43H7Z50.M8
+S8000M3
+X6.982Y.5I-7.J0.0</code></pre>
+        </figure>
+      </div>
+      <p>Dấu cách giữa các từ (<code>N1 T7 M6</code> → <code>N1T7M6</code>) là một cài đặt khác, sẽ có bài riêng.</p>
+
+      <h2>Cách chỉnh</h2>
+      <p>Mọi bước đều ở tab <b>N/C Data Definitions → WORD</b>. Chọn từ cần sửa (N, M, T, X…), bấm <b>Edit</b> cạnh ô <b>Format</b> để mở hộp thoại định dạng.</p>
+
+      <div class="step">
+        <div class="step-head"><span class="step-num">01</span><h3>Mở Format của một từ</h3></div>
+        <p>Ví dụ với từ <code>Z</code>: ô Format là <code>Coordinate</code>, bấm <b>Edit</b>. Các từ X, Y, Z thường dùng chung format <code>Coordinate</code>, nên sửa một lần là áp dụng cho cả ba.</p>
+        <figure class="shot narrow"><img src="img/b1-mo-format.png" width="622" height="811" loading="lazy" alt="Hộp thoại WORD Z trong Post Builder, mũi tên chỉ nút Edit cạnh format Coordinate"><figcaption>WORD : Z → Edit để mở format Coordinate.</figcaption></figure>
+      </div>
+
+      <div class="step">
+        <div class="step-head"><span class="step-num">02</span><h3>Số thứ tự N: bỏ <code>N0001</code></h3></div>
+        <p>Chọn từ <code>N</code>, format <code>Digit_4</code>. <b>Bỏ tick Output Leading Zeros</b>. Ô xem trước đổi từ <code>0001</code> thành <code>1</code>.</p>
+        <figure class="shot narrow"><img src="img/b1-n.png" width="631" height="664" loading="lazy" alt="Format Digit_4 của từ N: Output Leading Zeros không tick, Output Trailing Zeros có tick, xem trước hiện 1"><figcaption>Leading Zeros đã bỏ tick. Mũi tên đỏ chỉ Trailing Zeros: <b>giữ nguyên</b> ô này.</figcaption></figure>
+      </div>
+
+      <div class="step">
+        <div class="step-head"><span class="step-num">03</span><h3>Lệnh M: bỏ <code>M03</code> → <code>M3</code></h3></div>
+        <p>Chọn từ <code>M</code>, format <code>Digit_2</code>, bỏ tick <b>Output Leading Zeros</b>.</p>
+        <figure class="shot"><img src="img/b1-m.png" width="1221" height="836" loading="lazy" alt="Format Digit_2 của từ M: Leading Zeros không tick, xem trước hiện 1"><figcaption>M dùng Digit_2: xem trước hiện <code>1</code> thay vì <code>01</code>.</figcaption></figure>
+      </div>
+
+      <div class="step">
+        <div class="step-head"><span class="step-num">04</span><h3>Số dao T: bỏ <code>T01</code> → <code>T1</code></h3></div>
+        <p>Chọn từ <code>T</code>, format <code>Tcode</code>, bỏ tick <b>Output Leading Zeros</b>.</p>
+        <figure class="shot"><img src="img/b1-t.png" width="1207" height="802" loading="lazy" alt="Format Tcode của từ T: mũi tên chỉ Output Leading Zeros đã bỏ tick, xem trước hiện 1, ô từ T vẫn hiện T 01"><figcaption>Ô xem trước của format hiện <code>1</code>; ô của từ T chỉ cập nhật sau khi bấm OK.</figcaption></figure>
+      </div>
+
+      <div class="step">
+        <div class="step-head"><span class="step-num">05</span><h3>Toạ độ X, Y, Z: bỏ <code>X0.5</code> → <code>X.5</code> (tuỳ chọn)</h3></div>
+        <p>Mở format <code>Coordinate</code> (bước 01). Ảnh dưới là trạng thái mặc định: <b>Output Leading Zeros</b> đang tick. Bỏ tick để <code>0.5</code> xuất thành <code>.5</code>.</p>
+        <figure class="shot"><img src="img/b1-x.png" width="1213" height="880" loading="lazy" alt="Format Coordinate 1.3 mặc định: Output Decimal Point và Output Leading Zeros đang tick"><figcaption>Mặc định: Leading Zeros đang tick, cần bỏ. <b>Giữ</b> tick Output Decimal Point.</figcaption></figure>
+      </div>
+
+      <div class="note">
+        <b>Không bỏ dấu chấm thập phân của toạ độ</b>
+        <p>Giữ tick <b>Output Decimal Point (.)</b> cho format <code>Coordinate</code>. Trên nhiều máy Fanuc, <code>X7</code> không có dấu chấm được hiểu là 0.007&nbsp;mm chứ không phải 7&nbsp;mm. File mẫu ở trên xuất <code>X7.</code> và <code>Z50.</code> là đúng.</p>
+      </div>
+      <div class="note">
+        <b>Giữ tick Output Trailing Zeros cho N, M, T</b>
+        <p>Trong các ảnh trên, Trailing Zeros của số nguyên vẫn được tick. Đừng bỏ tick này cho format số nguyên. Sau khi sửa, xuất thử một chương trình có dao <code>T10</code> và kiểm tra số còn đủ.</p>
+      </div>
+
+      <h2>Tóm tắt</h2>
+      <table>
+        <thead><tr><th>Từ</th><th>Format</th><th>Đổi</th><th>Kết quả</th></tr></thead>
+        <tbody>
+          <tr><td>N</td><td><code>Digit_4</code></td><td>Bỏ Leading Zeros</td><td><code>N1</code></td></tr>
+          <tr><td>M</td><td><code>Digit_2</code></td><td>Bỏ Leading Zeros</td><td><code>M3</code></td></tr>
+          <tr><td>T</td><td><code>Tcode</code></td><td>Bỏ Leading Zeros</td><td><code>T7</code></td></tr>
+          <tr><td>X Y Z</td><td><code>Coordinate</code></td><td>Bỏ Leading Zeros, giữ Decimal Point</td><td><code>Y.5</code>, <code>X7.</code></td></tr>
+        </tbody>
+      </table>
+      <p>Sau khi sửa: <b>Save</b> post, xuất lại chương trình và so với bảng trên. Giá trị bằng 0 vẫn xuất <code>X0.0</code> như trong file mẫu.</p>
+
+      <h2>Giới hạn</h2>
+      <p>Ảnh chụp trên NX 12.0.2 Post Builder với post phay 3 trục Generic. Tên format (<code>Digit_4</code>, <code>Tcode</code>…) có thể khác nếu post của bạn tạo từ thư viện máy khác; hãy chọn từ trước rồi xem format nó đang dùng.</p>
+
+      <section class="next" aria-labelledby="next-title">
+        <h2 id="next-title">Bài liên quan</h2>
+        <ol><li><a href="g54-x0y0.html">Xuất G54…G59 và về X0Y0 đúng gốc phôi</a></li><li><a href="xoan-oc-g2g3.html">Cung tròn G2/G3 và phay xoắn ốc gọn</a></li><li><a href="taro-q.html">Thêm Q cho chu trình taro G84</a></li></ol>
+      </section>
+    </article>
+  </main>
+
+  <footer><div class="wrap">© 2026 ThanhCAM · Hướng dẫn dựa trên post và máy của tác giả; kiểm tra lại trên máy của bạn trước khi chạy thật. · <a href="/#lien-he">Liên hệ</a></div></footer>
+</body>
+</html>

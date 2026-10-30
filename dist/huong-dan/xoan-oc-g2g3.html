@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Xuất cung tròn G2/G3 đủ mặt phẳng G17/G18/G19 và phay xoắn ốc gọn: bỏ K, bỏ X Y lặp lại ở mỗi vòng, NX 12 Post Builder. Có code và NC mẫu.">
+  <title>Cung tròn G2/G3 và phay xoắn ốc gọn — Post NX 12 | ThanhCAM</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><span class="brand-mark">TC</span><span>Thanh<b>CAM</b></span></a><nav class="header-nav"><a href="/">Trang chủ</a><a href="index.html">Hướng dẫn Post NX</a></nav></div></header>
+
+  <section class="hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Hướng dẫn Post NX</a> / G2/G3 xoắn ốc</div>
+    <h1>Cung tròn G2/G3 và phay xoắn ốc gọn</h1>
+    <p class="lead">Hai việc: (1) cho post xuất cung ở cả mặt phẳng <code>G18</code>/<code>G19</code> thay vì bẻ thành hàng nghìn dòng G1; (2) khi phay xoắn ốc (helix), mỗi vòng chỉ còn <code>Z-2.I-7.J0</code> — bỏ <code>K</code> và bỏ <code>X Y</code> lặp lại.</p>
+    <ul class="facts"><li>NX 12.0.2 Post Builder</li><li>Phay 3 trục · kiểu Fanuc</li><li>Đã xuất thử trên NX 12</li></ul>
+  </div></section>
+
+  <main class="wrap"><article>
+    <h2>Kết quả</h2>
+    <div class="compare">
+      <figure class="code-box after"><figcaption>Xoắn ốc, mỗi vòng 1 dòng</figcaption><pre><code>G0G90G54X7.Y0
+Z0
+G3Z-1.I-7.J0F2500.
+Z-2.I-7.J0
+Z-3.I-7.J0
+...
+Z-10.I-7.J0
+I-7.J0</code></pre></figure>
+      <figure class="code-box after"><figcaption>Cung ở mặt phẳng YZ (dao cầu)</figcaption><pre><code>G1Z-54.947F2000.
+<mark>G19</mark>G3Y-31.Z-9.582J-54.998K-.062
+Y-54.923Z-52.674J30.889K-45.335
+G1Y-55.Z-55.
+X48.006
+G2Y30.999Z-9.58J54.999K-.009</code></pre></figure>
+    </div>
+    <div class="download">
+      <p><b>Tải về:</b> code 2 lệnh và file NC mẫu.</p>
+      <div class="download-links"><a class="btn" href="code/helix-g2g3.tcl" download>helix-g2g3.tcl</a><a class="btn ghost" href="code/mau-helix.nc" download>NC mẫu xoắn ốc</a></div>
+    </div>
+
+    <h2>Phần 1 — xuất cung ở mọi mặt phẳng</h2>
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Circular Move: XYZ và Full Circle</h3></div>
+      <p><b>Program &amp; Tool Path → Program → Tool Path → Motion → Circular Move</b>. Chọn <b>Applicable Planes = XYZ</b> <span class="badge">1</span> và <b>Circular Record = Full Circle</b> <span class="badge">2</span>.</p>
+      <figure class="shot"><a href="img/hx-1-mat-phang.jpg"><img src="img/hx-1-mat-phang.jpg" width="1400" height="833" loading="lazy" alt="Event Circular Move: Applicable Planes XYZ và Circular Record Full Circle"></a><figcaption><span class="badge">1</span> XYZ · <span class="badge">2</span> Full Circle.</figcaption></figure>
+      <p>Muốn xuất bán kính <code>R</code> thay cho <code>I J K</code>, xem bài <a href="index.html">Xuất cung bằng IJK hay R</a> (đang soạn).</p>
+    </div>
+
+    <h2>Phần 2 — xoắn ốc gọn</h2>
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Tạo Custom Command mới</h3></div>
+      <p><b>Custom Command</b>, chọn một lệnh bất kỳ trong danh sách rồi bấm <b>Create</b> (đánh số 1–3 trong ảnh).</p>
+      <figure class="shot"><a href="img/hx-2-create.jpg"><img src="img/hx-2-create.jpg" width="1400" height="943" loading="lazy" alt="Tab Custom Command, nút Create"></a><figcaption>Program &amp; Tool Path → chọn lệnh bất kỳ → Create.</figcaption></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">02</span><h3>Lệnh <code>is_closed_xy_helix</code></h3></div>
+      <p>Tên <code>is_closed_xy_helix</code> <span class="badge">4</span>, dán <b>phần 1</b> trong file tải về. Lệnh này kiểm tra vòng xoắn có kết thúc đúng điểm bắt đầu (cùng X, Y) hay không.</p>
+      <figure class="shot"><a href="img/hx-3-is-closed.jpg"><img src="img/hx-3-is-closed.jpg" width="1400" height="961" loading="lazy" alt="Custom Command PB_CMD_is_closed_xy_helix"></a><figcaption><span class="badge">4</span> <code>PB_CMD_is_closed_xy_helix</code>.</figcaption></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">03</span><h3>Lệnh <code>init_helix</code></h3></div>
+      <p>Tạo tiếp lệnh tên <code>init_helix</code> <span class="badge">5</span>, dán <b>phần 2</b>. Lệnh có tên bắt đầu bằng <code>init_</code> được Post Builder tự chạy khi bắt đầu chương trình, không cần kéo vào đâu.</p>
+      <figure class="shot"><a href="img/hx-4-init-helix.jpg"><img src="img/hx-4-init-helix.jpg" width="1400" height="961" loading="lazy" alt="Custom Command PB_CMD_init_helix, dòng set mom_sys_helix_pitch_type none"></a><figcaption><span class="badge">5</span> <code>PB_CMD_init_helix</code> · <span class="badge">6</span> <code>"none"</code> = bỏ bước xoắn K.</figcaption></figure>
+      <p>Hai chỗ đã sửa so với lệnh mẫu của Siemens:</p>
+      <table>
+        <thead><tr><th>Chỗ</th><th>Mẫu</th><th>Sửa thành</th></tr></thead>
+        <tbody>
+          <tr><td>Bước xoắn</td><td><code>"rise_radian"</code></td><td><code>"none"</code> — không in K</td></tr>
+          <tr><td>Vòng kín XY</td><td>luôn in X Y Z</td><td>chỉ in Z (gọi <code>PB_CMD_is_closed_xy_helix</code>)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note"><b>Chỉ áp dụng vòng kín, toạ độ tuyệt đối</b><p>Vòng cuối không trọn (ví dụ <code>X6.982Y.5…</code>) và chế độ G91 vẫn in đủ X Y Z như cũ. Máy cần hiểu xoắn ốc G2/G3 có Z (hầu hết Fanuc đều được).</p></div>
+
+    <section class="next"><h2>Bài liên quan</h2><ol><li><a href="bo-so-0-thua.html">Bỏ số 0 thừa trước N, M, T</a></li></ol></section>
+  </article></main>
+  <footer><div class="wrap">© 2026 ThanhCAM · Hướng dẫn dựa trên post và máy của tác giả; kiểm tra lại trên máy của bạn trước khi chạy thật. · <a href="/#lien-he">Liên hệ</a></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>

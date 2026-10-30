@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Xuất G54, G55… theo Fixture Offset trong NX và về X0Y0 đúng gốc phôi người dùng chọn trước khi gia công, NX 12 Post Builder.">
+  <title>Xuất G54…G59 và về X0Y0 đúng gốc phôi — Post NX 12 | ThanhCAM</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><span class="brand-mark">TC</span><span>Thanh<b>CAM</b></span></a><nav class="header-nav"><a href="/">Trang chủ</a><a href="index.html">Hướng dẫn Post NX</a></nav></div></header>
+
+  <section class="hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Hướng dẫn Post NX</a> / G54…G59</div>
+    <h1>Xuất G54…G59 và về X0Y0 đúng gốc phôi</h1>
+    <p class="lead">Post mặc định thường cố định <code>G54</code>. Bài này cho post lấy số gốc phôi từ <b>Fixture Offset</b> trong NX (1 → G54, 2 → G55…), và thêm một lệnh chạy về <code>X0Y0</code> của đúng gốc đó trước dao đầu tiên.</p>
+    <ul class="facts"><li>NX 12.0.2 Post Builder</li><li>Phay 3 trục · kiểu Fanuc</li><li>Đã xuất thử trên NX 12</li></ul>
+  </div></section>
+
+  <main class="wrap"><article>
+    <h2>Kết quả</h2>
+    <figure class="code-box after"><figcaption>Trích file NC xuất thật, Fixture Offset = 1</figcaption><pre><code>G17G40G80G49G94G21
+G91G28Z0
+<mark>G0G90G54X0Y0</mark>
+N1T7M6
+<mark>G0G90G54X0Y0</mark>
+G43H7Z50.M8</code></pre></figure>
+
+    <div class="download">
+      <p><b>Tải về:</b> code lệnh về X0Y0.</p>
+      <div class="download-links"><a class="btn" href="code/g54-x0y0.tcl" download>g54-x0y0.tcl</a></div>
+    </div>
+
+    <h2>Phần 1 — G54…G59 theo Fixture Offset</h2>
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Sửa biểu thức của từ <code>G</code> trong khối chạy nhanh</h3></div>
+      <p><b>N/C Data Definitions</b> <span class="badge">1</span> → <b>BLOCK</b> <span class="badge">2</span>, chọn khối <code>rapid_traverse</code> <span class="badge">3</span> (và <code>rapid_move</code> nếu có). Chuột phải vào từ <code>G</code> thứ ba → <b>Edit</b> <span class="badge">4</span>. Ở ô <b>Expression</b> <span class="badge">5</span> nhập:</p>
+      <figure class="code-box"><figcaption>Expression <button class="copy" type="button">Sao chép</button></figcaption><pre><code>$mom_fixture_offset_value + 53</code></pre></figure>
+      <figure class="shot"><a href="img/g54-2-expression.jpg"><img src="img/g54-2-expression.jpg" width="1400" height="855" loading="lazy" alt="Khối rapid_traverse, hộp WORD G với Expression mom_fixture_offset_value + 53"></a><figcaption>Fixture Offset 1 + 53 = <code>G54</code>, 2 → <code>G55</code> … 6 → <code>G59</code>.</figcaption></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">02</span><h3>Đặt Fixture Offset trong NX</h3></div>
+      <p>Trong NX CAM, mở <b>MCS</b> → mục <b>Fixture Offset</b>: <code>1</code> = G54, <code>2</code> = G55 … <code>6</code> = G59.</p>
+    </div>
+
+    <div class="note"><b>Fixture Offset = 0 sẽ ra G53</b><p>Với công thức <code>+ 53</code>, giá trị 0 xuất <code>G53</code> (toạ độ máy): <code>G0G90G53X0Y0</code> chạy nhanh về gốc máy, không phải gốc phôi. Bước 03 dưới đây chặn lỗi này.</p></div>
+
+    <div class="step">
+      <div class="step-head"><span class="step-num">03</span><h3>Chặn G53 khi quên đặt Fixture Offset</h3></div>
+      <p><b>Custom Command → Create</b>, tên <code>fixture_offset_guard</code>, dán code. Rồi mở <code>PB_CMD_before_motion</code>, thêm một dòng <code>PB_CMD_fixture_offset_guard</code> (giống cách gọi ở bài <a href="canh-bao-s0.html">cảnh báo S = 0</a>).</p>
+      <figure class="code-box"><figcaption>PB_CMD_fixture_offset_guard <button class="copy" type="button">Sao chép</button></figcaption>
+<pre><code>global mom_fixture_offset_value mom_operation_name thanhcam_g53_warned
+if { [info exists mom_fixture_offset_value] &amp;&amp; [string is integer -strict $mom_fixture_offset_value] &amp;&amp; $mom_fixture_offset_value &gt;= 1 } { return }
+set mom_fixture_offset_value 1
+if { ![info exists thanhcam_g53_warned($mom_operation_name)] } {
+   set thanhcam_g53_warned($mom_operation_name) 1
+   MOM_display_message "Operation $mom_operation_name: Fixture Offset = 0 se ra G53. Da doi sang G54, kiem tra lai MCS." "Canh bao G53"
+}</code></pre></figure>
+      <p>Lệnh chỉ sửa các dòng chạy nhanh trong nguyên công. Dòng về gốc máy cố định ở cuối chương trình vẫn giữ nguyên:</p>
+      <figure class="code-box"><figcaption>Cuối chương trình — không đổi</figcaption><pre><code>G91G28Z0
+G28Y0
+G0G90G53
+M30</code></pre></figure>
+    </div>
+
+    <h2>Phần 2 — về X0Y0 trước dao đầu tiên</h2>
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Tạo lệnh <code>first_tool_xy0</code></h3></div>
+      <p><b>Custom Command → Create</b>, tên <code>first_tool_xy0</code>, dán code. Lệnh chỉ chạy một lần mỗi chương trình và dùng cùng quy tắc <code>+ 53</code> ở trên.</p>
+      <figure class="code-box"><figcaption>PB_CMD_first_tool_xy0 <button class="copy" type="button">Sao chép</button></figcaption>
+<pre><code>global thanhcam_xy0_done mom_fixture_offset_value
+if { [info exists thanhcam_xy0_done] } { return }
+set thanhcam_xy0_done 1
+if { [info exists mom_fixture_offset_value] &amp;&amp; [string is integer -strict $mom_fixture_offset_value] &amp;&amp; $mom_fixture_offset_value &gt;= 1 } {
+   MOM_output_literal "G0G90G[expr {$mom_fixture_offset_value + 53}]X0Y0"
+} else {
+   MOM_output_literal "G0G90G54X0Y0"
+   MOM_output_to_listing_device "Work offset unknown at program start; used G54 for the first X0Y0 move"
+}</code></pre></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">02</span><h3>Đặt sau <code>G91G28Z0.</code> trong Auto Tool Change</h3></div>
+      <p>Kéo <code>PB_CMD_first_tool_xy0</code> vào <b>Auto Tool Change</b>, ngay dưới khối <code>G91G28Z0.</code> <span class="badge">1</span>: trục Z lên an toàn rồi mới chạy XY.</p>
+      <figure class="shot"><a href="img/g54-1-first-tool-xy0.jpg"><img src="img/g54-1-first-tool-xy0.jpg" width="1400" height="971" loading="lazy" alt="Khối PB_CMD_first_tool_xy0 nằm dưới G91G28Z0. trong Auto Tool Change"></a><figcaption><span class="badge">1</span> vị trí <code>PB_CMD_first_tool_xy0</code>.</figcaption></figure>
+    </div>
+
+    <section class="next"><h2>Bài liên quan</h2><ol><li><a href="bo-m1-dao-dau.html">Bỏ M1 ở lần thay dao đầu tiên</a></li><li><a href="dao-cho.html">Thêm dao chờ sau lệnh thay dao</a></li></ol></section>
+  </article></main>
+  <footer><div class="wrap">© 2026 ThanhCAM · Hướng dẫn dựa trên post và máy của tác giả; kiểm tra lại trên máy của bạn trước khi chạy thật. · <a href="/#lien-he">Liên hệ</a></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>

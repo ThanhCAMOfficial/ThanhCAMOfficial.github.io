@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bỏ lệnh dừng M1 ở lần thay dao đầu tiên, giữ M1 cho các dao sau, trong NX 12 Post Builder. Có code tải về.">
+  <title>Bỏ M1 ở lần thay dao đầu tiên — Post NX 12 | ThanhCAM</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><span class="brand-mark">TC</span><span>Thanh<b>CAM</b></span></a><nav class="header-nav"><a href="/">Trang chủ</a><a href="index.html">Hướng dẫn Post NX</a></nav></div></header>
+
+  <section class="hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Hướng dẫn Post NX</a> / Bỏ M1 dao đầu</div>
+    <h1>Bỏ M1 ở lần thay dao đầu tiên</h1>
+    <p class="lead"><code>M1</code> (dừng có chọn) trước mỗi lần thay dao giúp thợ kiểm tra dao vừa cắt xong. Nhưng trước dao đầu tiên chưa có gì để kiểm tra, máy dừng vô ích. Lệnh nhỏ này bỏ đúng một <code>M1</code> đầu, giữ nguyên các <code>M1</code> sau.</p>
+    <ul class="facts"><li>NX 12.0.2 Post Builder</li><li>Phay 3 trục · kiểu Fanuc</li><li>Đã xuất thử trên NX 12</li></ul>
+  </div></section>
+
+  <main class="wrap"><article>
+    <h2>Kết quả</h2>
+    <div class="compare">
+      <figure class="code-box"><figcaption>Trước — file NC bản cũ</figcaption><pre><code>G91G28Z0
+G0G90G54X0Y0
+G91G28Z0.0
+<mark>M1</mark>
+N1T7M6
+...
+M1
+N2T16M6</code></pre></figure>
+      <figure class="code-box after"><figcaption>Sau — trích file NC xuất thật</figcaption><pre><code>G91G28Z0
+G0G90G54X0Y0
+N1T7M6
+...
+G91G28Z0
+M1
+N2T16M6</code></pre></figure>
+    </div>
+
+    <div class="download">
+      <p><b>Tải về:</b> code dán vào Post Builder.</p>
+      <div class="download-links"><a class="btn" href="code/bo-m1-dao-dau.tcl" download>bo-m1-dao-dau.tcl</a></div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Tạo lệnh <code>skip_first_stop</code></h3></div>
+      <p><b>Program &amp; Tool Path → Custom Command → Create</b>, đặt tên <code>skip_first_stop</code> <span class="badge">1</span>, dán code:</p>
+      <figure class="code-box"><figcaption>PB_CMD_skip_first_stop <button class="copy" type="button">Sao chép</button></figcaption>
+<pre><code>global thanhcam_stop_done
+if { ![info exists thanhcam_stop_done] } {
+   set thanhcam_stop_done 1
+   MOM_suppress once M
+}</code></pre></figure>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">02</span><h3>Đặt ngay trước khối <code>M1</code></h3></div>
+      <p><b>Program → Operation Start Sequence → Auto Tool Change</b>. Kéo <code>PB_CMD_skip_first_stop</code> vào <b>ngay phía trên</b> khối <code>M1</code> <span class="badge">2</span>.</p>
+      <figure class="shot"><a href="img/m1-1-skip-first-stop.jpg"><img src="img/m1-1-skip-first-stop.jpg" width="1400" height="916" loading="lazy" alt="Custom Command skip_first_stop và khối PB_CMD_skip_first nằm ngay trên M1 trong Auto Tool Change"></a><figcaption><span class="badge">1</span> tên lệnh · <span class="badge">2</span> đặt ngay trên <code>M1</code>.</figcaption></figure>
+    </div>
+
+    <div class="note"><b>Vì sao phải đặt sát M1</b><p><code>MOM_suppress once M</code> chặn từ <code>M</code> <b>kế tiếp</b> được xuất ra. Nếu giữa lệnh này và <code>M1</code> có khối khác chứa M (ví dụ <code>M6</code>, <code>M8</code>), khối đó sẽ bị chặn thay cho M1.</p></div>
+
+    <section class="next"><h2>Bài liên quan</h2><ol><li><a href="g54-x0y0.html">Về X0Y0 theo G54…G59 người dùng chọn</a></li><li><a href="dao-cho.html">Thêm dao chờ sau lệnh thay dao</a></li></ol></section>
+  </article></main>
+  <footer><div class="wrap">© 2026 ThanhCAM · Hướng dẫn dựa trên post và máy của tác giả; kiểm tra lại trên máy của bạn trước khi chạy thật. · <a href="/#lien-he">Liên hệ</a></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>

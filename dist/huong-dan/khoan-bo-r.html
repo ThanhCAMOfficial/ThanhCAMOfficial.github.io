@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bỏ R và X Y 0 lặp lại ở mỗi lỗ trong chu trình khoan G81, G83, taro G84 bằng cách sửa file .def của post NX 12. Có file NC trước và sau.">
+  <title>Chu trình khoan G81/G83/G84 gọn: bỏ R lặp lại — Post NX 12 | ThanhCAM</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><span class="brand-mark">TC</span><span>Thanh<b>CAM</b></span></a><nav class="header-nav"><a href="/">Trang chủ</a><a href="index.html">Hướng dẫn Post NX</a></nav></div></header>
+
+  <section class="hero"><div class="wrap">
+    <div class="crumb"><a href="index.html">Hướng dẫn Post NX</a> / Khoan bỏ R</div>
+    <h1>Chu trình khoan gọn: bỏ R lặp lại</h1>
+    <p class="lead">Post mặc định in lại <code>R1.</code> ở mọi lỗ trong <code>G81</code>, <code>G83</code>, <code>G84</code>. Máy Fanuc giữ R cho tới <code>G80</code>, nên chỉ cần in một lần ở dòng đầu chu trình.</p>
+    <ul class="facts"><li>NX 12.0.2 Post Builder</li><li>Sửa file .def</li><li>Đã xuất thử trên NX 12</li></ul>
+  </div></section>
+
+  <main class="wrap"><article>
+    <h2>Trước và sau</h2>
+    <div class="compare">
+      <figure class="code-box"><figcaption>Trước — NC xuất thật</figcaption><pre><code>G83X0.0Y0.0Z-10.R1.F50.Q2.
+X50.<mark>R1.</mark>
+Y50.<mark>R1.</mark>
+X0.0<mark>R1.</mark>
+G80</code></pre></figure>
+      <figure class="code-box after"><figcaption>Sau — NC xuất thật</figcaption><pre><code>G83Z-10.R1.F50.Q2.
+X50.
+Y50.
+X0
+G80</code></pre></figure>
+    </div>
+    <p>Trong file "sau", <code>X0.0Y0.0</code> ở dòng đầu cũng biến mất vì dao đã đứng sẵn ở <code>X0Y0</code> từ lệnh chạy nhanh trước đó.</p>
+
+    <div class="download">
+      <p><b>Tải về:</b> đoạn thay trong file .def và NC mẫu.</p>
+      <div class="download-links"><a class="btn" href="code/khoan-bo-r.def.txt" download>khoan-bo-r.def.txt</a><a class="btn ghost" href="code/mau-khoan-bo-r.nc" download>NC mẫu</a></div>
+    </div>
+
+    <div class="step">
+      <div class="step-head"><span class="step-num">01</span><h3>Mở file <code>.def</code> của post</h3></div>
+      <p>Post Builder lưu 3 file cùng tên: <code>.pui</code>, <code>.tcl</code>, <code>.def</code>. <b>Sao lưu cả 3 trước khi sửa.</b> Mở <code>.def</code> bằng Notepad++, tìm (<kbd>Ctrl</kbd>+<kbd>F</kbd>) dòng <code>ADDRESS R</code>.</p>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">02</span><h3>Thay khối <code>ADDRESS R</code></h3></div>
+      <p>Đổi dòng <code>FORCE always</code> thành <code>FORCE once</code> (R in một lần mỗi chu trình):</p>
+      <figure class="code-box"><figcaption>Cách 1 — FORCE once <button class="copy" type="button">Sao chép</button></figcaption>
+<pre><code> ADDRESS R
+  {
+      FORMAT      Coordinate
+      FORCE       once
+      MAX         99999.999 Truncate
+      MIN         -99999.999 Truncate
+      LEADER      "R"
+      ZERO_FORMAT Zero_real
+  }</code></pre></figure>
+      <p>Hoặc <code>FORCE off</code>: R chỉ in khi giá trị thay đổi.</p>
+    </div>
+    <div class="step">
+      <div class="step-head"><span class="step-num">03</span><h3>Lưu và xuất lại</h3></div>
+      <p>Lưu file, <b>không mở lại bằng Post Builder rồi Save</b> nếu chưa cần (Post Builder có thể ghi đè). Xuất lại post và so với bảng trên.</p>
+    </div>
+
+    <div class="note"><b>Chỉ dùng khi post xuất cung bằng I J K</b><p><code>ADDRESS R</code> dùng chung cho bán kính cung <code>G2/G3 R</code>. Nếu post của bạn xuất cung bằng R, sửa ở đây có thể làm mất R ở các cung liên tiếp cùng bán kính — máy sẽ hiểu sai cung. Xem bài <a href="cung-ijk-r.html">Xuất cung bằng IJK hay R</a>.</p></div>
+
+    <section class="next"><h2>Bài liên quan</h2><ol><li><a href="taro-q.html">Thêm Q cho chu trình taro G84</a></li><li><a href="cung-ijk-r.html">Xuất cung bằng IJK hay R</a></li></ol></section>
+  </article></main>
+  <footer><div class="wrap">© 2026 ThanhCAM · Hướng dẫn dựa trên post và máy của tác giả; kiểm tra lại trên máy của bạn trước khi chạy thật. · <a href="/#lien-he">Liên hệ</a></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>
