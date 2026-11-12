@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tải miễn phí code Post NX 12 của ThanhCAM: file .tcl dán vào Post Builder, đoạn sửa .def và file NC mẫu xuất thật. Không cần đăng nhập.">
+  <title>Tải code Post NX 12 miễn phí | ThanhCAM</title>
+  <link rel="canonical" href="https://thanhcam.com/tai-ve/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://thanhcam.com/tai-ve/">
+  <meta property="og:title" content="Tải code Post NX 12 miễn phí | ThanhCAM">
+  <meta property="og:description" content="File .tcl, đoạn .def và NC mẫu xuất thật cho NX 12 Post Builder. Không cần đăng nhập.">
+  <meta property="og:image" content="https://thanhcam.com/huong-dan/img/dc-2-block-t.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="/huong-dan/style.css">
+  <style>
+    .dl-table td:first-child { font-weight: 700; }
+    .dl-table td small { display: block; color: var(--soft); font-weight: 400; }
+    .dl-table .size, .dl-table .date { white-space: nowrap; color: var(--soft); font: 600 .78rem ui-monospace, Consolas, monospace; }
+    .dl-table .act { white-space: nowrap; text-align: right; }
+    .dl-table .act a { margin-left: 8px; font-weight: 700; }
+    @media (max-width: 640px) { .dl-table th:nth-child(3), .dl-table td:nth-child(3) { display: none; } .dl-table .act a { display: inline-block; padding: 8px 4px; } }
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="wrap header-inner"><a class="brand" href="/"><span class="brand-mark">TC</span><span>Thanh<b>CAM</b></span></a><nav class="header-nav"><a href="/">Trang chủ</a><a href="/huong-dan/">Hướng dẫn</a><a href="/video/">Video</a><a href="/tai-ve/">Tải về</a></nav></div></header>
+
+  <section class="hero"><div class="wrap">
+    <div class="crumb">ThanhCAM / Tải về</div>
+    <h1>Tải code Post NX 12</h1>
+    <p class="lead">Tất cả code trong các bài hướng dẫn, gom một chỗ. Tải thẳng, không cần đăng nhập. Mỗi file đều có hướng dẫn cài ở dòng đầu và link về bài viết.</p>
+    <ul class="facts"><li>NX 12.0.2 Post Builder</li><li>Phay 3 trục · kiểu Fanuc</li><li>Miễn phí</li></ul>
+  </div></section>
+
+  <main class="wrap">
+    <div class="download">
+      <p><b>Tải cả bộ</b> (13 file, 10 KB): toàn bộ code .tcl, đoạn .def và NC mẫu bên dưới.</p>
+      <div class="download-links"><a class="btn" href="thanhcam-post-nx-code.zip" download>thanhcam-post-nx-code.zip</a></div>
+    </div>
+
+    <div class="note"><b>Trước khi dùng</b><p>Sao lưu cả 3 file post (<code>.pui .tcl .def</code>) trước khi sửa. Code chạy tốt trên post phay 3 trục Generic của tác giả, NX 12.0.2; kiểm tra lại trên máy của bạn, chạy mô phỏng trước khi chạy thật. Dùng theo trách nhiệm của người dùng.</p></div>
+
+    <h2>Code dán vào Post Builder (.tcl)</h2>
+    <table class="dl-table">
+      <thead><tr><th>Tên</th><th>Dung lượng</th><th>Cập nhật</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Xuất G54…G59 và về X0Y0<small>Gốc phôi theo Fixture Offset, chặn lỗi G53</small></td><td class="size">1,8 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/g54-x0y0.html">Bài</a><a href="/huong-dan/code/g54-x0y0.tcl" download>Tải</a></td></tr>
+        <tr><td>Bỏ M1 ở lần thay dao đầu<small>Giữ M1 cho các dao sau</small></td><td class="size">0,6 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/bo-m1-dao-dau.html">Bài</a><a href="/huong-dan/code/bo-m1-dao-dau.tcl" download>Tải</a></td></tr>
+        <tr><td>Dao chờ sau lệnh thay dao<small>In T của dao kế tiếp</small></td><td class="size">1,0 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/dao-cho.html">Bài</a><a href="/huong-dan/code/dao-cho.tcl" download>Tải</a></td></tr>
+        <tr><td>Cảnh báo S = 0 và F = 250<small>Hiện cảnh báo khi xuất post</small></td><td class="size">0,8 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/canh-bao-s0.html">Bài</a><a href="/huong-dan/code/canh-bao-s0-f250.tcl" download>Tải</a></td></tr>
+        <tr><td>Xoắn ốc G2/G3 gọn<small>Bỏ K, bỏ X Y lặp ở vòng kín (2 lệnh)</small></td><td class="size">4,6 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/xoan-oc-g2g3.html">Bài</a><a href="/huong-dan/code/helix-g2g3.tcl" download>Tải</a></td></tr>
+        <tr><td>Tự mở CIMCO — cách 1<small>3 dòng, đường dẫn cố định</small></td><td class="size">0,5 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/cimco.html">Bài</a><a href="/huong-dan/code/cimco-don-gian.tcl" download>Tải</a></td></tr>
+        <tr><td>Tự mở CIMCO — cách 2<small>Tự tìm CIMCO hoặc Notepad++, không làm NX đứng chờ</small></td><td class="size">8,8 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/cimco.html">Bài</a><a href="/huong-dan/code/cimco-tcl.tcl" download>Tải</a></td></tr>
+      </tbody>
+    </table>
+
+    <h2>Sửa file .def</h2>
+    <table class="dl-table">
+      <thead><tr><th>Tên</th><th>Dung lượng</th><th>Cập nhật</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Bỏ R lặp lại ở G81/G83/G84<small>Hai cách đổi ADDRESS R</small></td><td class="size">0,8 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/khoan-bo-r.html">Bài</a><a href="/huong-dan/code/khoan-bo-r.def.txt" download>Tải</a></td></tr>
+      </tbody>
+    </table>
+
+    <h2>File NC mẫu (xuất thật)</h2>
+    <p>Dùng để so sánh với kết quả post của bạn. Không dùng để chạy máy.</p>
+    <table class="dl-table">
+      <thead><tr><th>Tên</th><th>Dung lượng</th><th>Cập nhật</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>Dao chờ<small>Khoan hai dao, có T dao kế tiếp</small></td><td class="size">0,5 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/dao-cho.html">Bài</a><a href="/huong-dan/code/mau-dao-cho.nc" download>Tải</a></td></tr>
+        <tr><td>Taro G84 có Q<small>M8×1.25</small></td><td class="size">0,3 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/taro-q.html">Bài</a><a href="/huong-dan/code/mau-taro-q.nc" download>Tải</a></td></tr>
+        <tr><td>Xoắn ốc G2/G3<small>Mỗi vòng một dòng</small></td><td class="size">0,6 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/xoan-oc-g2g3.html">Bài</a><a href="/huong-dan/code/mau-helix.nc" download>Tải</a></td></tr>
+        <tr><td>Cung bằng R<small>Circular Record = Quadrant</small></td><td class="size">0,7 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/cung-ijk-r.html">Bài</a><a href="/huong-dan/code/mau-r.nc" download>Tải</a></td></tr>
+        <tr><td>Khoan G83 bỏ R<small>Sau khi sửa .def</small></td><td class="size">0,3 KB</td><td class="date">30/10/2026</td><td class="act"><a href="/huong-dan/khoan-bo-r.html">Bài</a><a href="/huong-dan/code/mau-khoan-bo-r.nc" download>Tải</a></td></tr>
+      </tbody>
+    </table>
+
+    <section class="next">
+      <h2>Cần post cho đúng máy của bạn?</h2>
+      <p>Các file trên là code làm sẵn từng chức năng nhỏ. Post có thêm Z min, thời gian gia công, danh sách dao, taro cứng M29/G95… chỉnh theo máy và bộ điều khiển của bạn thì liên hệ.</p>
+      <p><a class="btn" href="/#lien-he">Liên hệ</a> <a class="btn ghost" href="/huong-dan/post-thanhcam.html">Post ThanhCAM làm được gì</a></p>
+    </section>
+  </main>
+
+  <footer><div class="wrap">© 2026 ThanhCAM · Code chia sẻ miễn phí, dùng theo trách nhiệm của người dùng; kiểm tra lại trên máy của bạn trước khi chạy thật. · <a href="/#lien-he">Liên hệ</a></div></footer>
+</body>
+</html>
